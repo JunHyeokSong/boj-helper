@@ -1,24 +1,24 @@
 # import solution from ps
-import requests
-from bs4 import BeautifulSoup
+import httpHelper
+import dotenv
+import colorText
 
-URL = "https://www.acmicpc.net/problem/15652"
+def menu(problemNumber) :
+    print('Select  : t(test by test cases in BOJ), s(submit (not implemented yet)), q(quit) : ' , end='')
+    usr = input()
+    if usr in ['q', 'Q', 'quit'] :
+        exit(0)
+    if usr in ['t', 'T', 'test'] :
+        test()
 
-res = requests.get(URL)
 
-if res.status_code != 200 :
-    print("Http request failed...\nResponse status code: " + str(res.status_code))
-    exit(0)
+if __name__ == '__main__' :
+    print('Type problem number : ', end='')
+    problemNumber = input()
+    URL = 'https://www.acmicpc.net/problem/' + problemNumber
+    print('----- Starting to solve ' + problemNumber + ' -----')
 
-soup = BeautifulSoup(res.text, 'html.parser')
-samples = soup.select('.sampledata')
-
-samples = [sample.text for sample in samples]
-
-sampleLength = len(samples) // 2
-for i in range(sampleLength) :
-    print('----- Sample input ' + str(i+1) + ' -----')
-    print(samples[2*i])
-    print('----- Sample output ' + str(i+1) + ' -----')
-    print(samples[2*i + 1])
-    
+    res = httpHelper.getResponse(URL)
+    sampleInputs, sampleOutputs = httpHelper.extractSamples(res.text)
+    while True : 
+        
